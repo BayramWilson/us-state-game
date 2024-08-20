@@ -36,5 +36,3 @@ while len(correct_guesses) < 50:
         writer.penup()
         writer.goto(state_x, state_y)
         writer.write(answer_state)
-    if answer_state not in state_list:
-        print("not such state")
