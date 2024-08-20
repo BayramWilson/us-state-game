@@ -8,41 +8,34 @@ map = Turtle()
 map.shape(img)
 
 
-
-# print(answer_state)
-
 data = pandas.read_csv("50_states.csv")
 state_list = data.state.to_list()
-print(state_list)
 
-score = 0
 
 data = pandas.read_csv("50_states.csv")
 # print(state_list)
-correct_guesses=[]
-game_is_on = True
-while game_is_on:
-    answer_state = screen.textinput(title=f"{score}/50", prompt="What´s another state´s name")
-    while score < 50:
+correct_guesses = []
+missing_states = []
+while len(correct_guesses) < 50:
+    answer_state = screen.textinput(title=f"{len(correct_guesses)}/50", prompt="What´s another state´s name")
+    answer_state = answer_state.title()
+    if answer_state == "Exit":
+        for missed in data.state:
+            if missed not in correct_guesses:
+                missing_states.append(missed)
+        df = pandas.DataFrame(missing_states)
+        df.to_csv("missing_states.csv")
+        break
+    if answer_state in state_list:
         state_coordinate = data[data.state == answer_state]
         state_x = state_coordinate.x.item()
         state_y = state_coordinate.y.item()
-        if answer_state in state_list:
-            correct_guesses.append(answer_state)
-            writer = Turtle()
-            writer.hideturtle()
-            writer.penup()
-            writer.goto(state_x, state_y)
-            writer.write(answer_state)
-            score += 1
-            break
-        elif answer_state not in state_list:
-            print("not such state")
+        correct_guesses.append(answer_state)
+        writer = Turtle()
+        writer.hideturtle()
+        writer.penup()
+        writer.goto(state_x, state_y)
+        writer.write(answer_state)
+    if answer_state not in state_list:
+        print("not such state")
 
-
-# print(state_list)
-
-
-
-
-screen.mainloop()
