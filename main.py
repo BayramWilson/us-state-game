@@ -15,14 +15,15 @@ state_list = data.state.to_list()
 data = pandas.read_csv("50_states.csv")
 # print(state_list)
 correct_guesses = []
-missing_states = []
+
 while len(correct_guesses) < 50:
     answer_state = screen.textinput(title=f"{len(correct_guesses)}/50", prompt="What´s another state´s name")
     answer_state = answer_state.title()
     if answer_state == "Exit":
-        for missed in data.state:
-            if missed not in correct_guesses:
-                missing_states.append(missed)
+        missing_states = [item for item in data.state if item not in correct_guesses]
+#        for missed in data.state:
+#            if missed not in correct_guesses:
+#                missing_states.append(missed)
         df = pandas.DataFrame(missing_states)
         df.to_csv("missing_states.csv")
         break
